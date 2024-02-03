@@ -2,7 +2,7 @@ import subprocess
 import datetime
 import random
 
-def create_random_commits():
+def create_commits():
     try:
         # Change to your repository directory
         repo_path = "c:/Users/Samri/Documents/python/python"
@@ -12,7 +12,6 @@ def create_random_commits():
         start_date = end_date - datetime.timedelta(days=365)
         
         current_date = start_date
-        commits_count = 0
         
         while current_date <= end_date:
             # Skip committing on Sundays (day 6, where Monday is day 0)
@@ -20,32 +19,21 @@ def create_random_commits():
                 current_date += datetime.timedelta(days=1)
                 continue
             
-            # Generate a random number of commits for the current week
-            commits_per_week = random.randint(1, 5)
+            # Generate a random number of commits for the current day
+            commits_count = random.randint(0, 5)  # Adjust the range as needed
             
-            # Check if the current day is within a commit week
-            if commits_count < commits_per_week:
-                # Generate a random time within the current day
-                random_time = datetime.timedelta(seconds=random.randint(0, 86399))
-                commit_date = current_date + random_time
-                
-                # Format the commit date
-                commit_date_str = commit_date.strftime("%Y-%m-%d %H:%M:%S")
+            for _ in range(commits_count):
+                # Format the current date to be used as the commit date
+                commit_date = current_date.strftime("%Y-%m-%d %H:%M:%S")
                 
                 # Create a new commit with the commit message "test commit"
-                command = f'git commit --allow-empty --date="{commit_date_str}" -m "test commit"'
+                command = f'git commit --allow-empty --date="{commit_date}" -m "test commit"'
                 subprocess.run(command, cwd=repo_path, shell=True, check=True)
-                
-                commits_count += 1
             
             # Move to the next day
             current_date += datetime.timedelta(days=1)
-            
-            # Reset the commits count at the beginning of a new week
-            if commits_count == commits_per_week:
-                commits_count = 0
         
-        print(f"Random commits created for the last 365 days.")
+        print("Random commits created for the last 365 days.")
     
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
@@ -54,4 +42,4 @@ def create_random_commits():
         print(f"Unexpected error: {e}")
 
 if __name__ == "__main__":
-    create_random_commits()
+    create_commits()
