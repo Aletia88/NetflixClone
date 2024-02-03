@@ -1,7 +1,8 @@
 import subprocess
 import datetime
+import random
 
-def create_commits(commits_per_week):
+def create_random_commits():
     try:
         # Change to your repository directory
         repo_path = "c:/Users/Samri/Documents/python/python"
@@ -19,13 +20,20 @@ def create_commits(commits_per_week):
                 current_date += datetime.timedelta(days=1)
                 continue
             
+            # Generate a random number of commits for the current week
+            commits_per_week = random.randint(1, 5)
+            
             # Check if the current day is within a commit week
             if commits_count < commits_per_week:
-                # Format the current date to be used as the commit date
-                commit_date = current_date.strftime("%Y-%m-%d %H:%M:%S")
+                # Generate a random time within the current day
+                random_time = datetime.timedelta(seconds=random.randint(0, 86399))
+                commit_date = current_date + random_time
+                
+                # Format the commit date
+                commit_date_str = commit_date.strftime("%Y-%m-%d %H:%M:%S")
                 
                 # Create a new commit with the commit message "test commit"
-                command = f'git commit --allow-empty --date="{commit_date}" -m "test commit"'
+                command = f'git commit --allow-empty --date="{commit_date_str}" -m "test commit"'
                 subprocess.run(command, cwd=repo_path, shell=True, check=True)
                 
                 commits_count += 1
@@ -37,7 +45,7 @@ def create_commits(commits_per_week):
             if commits_count == commits_per_week:
                 commits_count = 0
         
-        print(f"New {commits_per_week} commits created per week (except Sundays) for the last 365 days.")
+        print(f"Random commits created for the last 365 days.")
     
     except subprocess.CalledProcessError as e:
         print(f"An error occurred: {e}")
@@ -46,5 +54,4 @@ def create_commits(commits_per_week):
         print(f"Unexpected error: {e}")
 
 if __name__ == "__main__":
-    commits_per_week = 3  # Set the number of commits per week here (3 or 4)
-    create_commits(commits_per_week)
+    create_random_commits()
