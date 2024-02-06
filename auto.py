@@ -21,7 +21,7 @@ def create_random_commits():
                 continue
             
             # Generate a random number of commits for the current week
-            commits_per_week = random.randint(1, 3)  # Adjusted to generate a smaller number of commits
+            commits_per_week = random.randint(1, 7)  # Adjusted to generate a smaller number of commits
             
             # Check if the current day is within a commit week
             if commits_count < commits_per_week:
